@@ -12,7 +12,7 @@ from dython.nominal import associations, numerical_encoding
 from scipy import stats
 from scipy.spatial.distance import cdist
 from sklearn.decomposition import PCA
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import ElasticNet, Lasso, LogisticRegression, Ridge
 from sklearn.metrics import f1_score, jaccard_score, mean_squared_error
@@ -25,6 +25,14 @@ from .metrics import *
 from .notebook import EvaluationResult, isnotebook, visualize_notebook
 from .utils import dict_to_df
 from .viz import *
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from scipy import stats
+import copy
+from pathlib import Path
+import warnings
+from typing import Tuple, Dict
 
 
 class TableEvaluator:
@@ -619,6 +627,7 @@ class TableEvaluator:
         return column_correlations(real, fake, self.categorical_columns)
 
     def evaluate(self, target_col: str, target_type: str = 'class', metric: str = None, verbose: bool = None,
+    
                  n_samples_distance: int = 20000, kfold: bool = False, notebook: bool = False, return_outputs: bool = False) -> Dict:
         """
         Determine correlation between attributes from the real and fake dataset using a given metric.
@@ -736,3 +745,79 @@ class TableEvaluator:
 
             print(f'\nResults:')
             print(summary.content.to_string())
+            
+    def plot_mean_std_individual(self, fname=None):
+        """
+        Plot mean and standard deviation of real and fake datasets individually.
+        """
+        # Your plotting code here
+        if fname:
+            # Save the plot to a file
+            pass
+        else:
+            # Show the plot
+            pass
+
+    def plot_cumsums_individual(self, fname=None):
+        """
+        Plot cumulative sums of real and fake datasets individually.
+        """
+        # Your plotting code here
+        if fname:
+            # Save the plot to a file
+            pass
+        else:
+            # Show the plot
+            pass
+
+    def plot_distributions_individual(self, fname=None):
+        """
+        Plot distributions of real and fake datasets individually.
+        """
+        # Your plotting code here
+        if fname:
+            # Save the plot to a file
+            pass
+        else:
+            # Show the plot
+            pass
+
+    def plot_correlation_difference_individual(self, fname=None, **kwargs):
+        """
+        Plot correlation differences between real and fake datasets individually.
+        """
+        # Your plotting code here
+        if fname:
+            # Save the plot to a file
+            pass
+        else:
+            # Show the plot
+            pass
+
+    def plot_pca_individual(self, fname=None):
+        """
+        Plot PCA of real and fake datasets individually.
+        """
+        # Your plotting code here
+        if fname:
+            # Save the plot to a file
+            pass
+        else:
+            # Show the plot
+            pass        
+    def generate_individual_plots(self, save_dir=None):
+        """
+        Generate individual plots for each evaluation metric.
+        """
+        if save_dir is None:
+            save_dir = Path(".")
+        else:
+            save_dir = Path(save_dir)
+
+        save_dir.mkdir(parents=True, exist_ok=True)
+
+        self.plot_mean_std_individual(fname=save_dir/'mean_std_individual.svg')
+        self.plot_cumsums_individual(fname=save_dir/'cumsums_individual.svg')
+        self.plot_distributions_individual(fname=save_dir/'distributions_individual.svg')
+        self.plot_correlation_difference_individual(fname=save_dir/'correlation_difference_individual.svg')
+        self.plot_pca_individual(fname=save_dir/'pca_individual.svg')        
