@@ -805,17 +805,17 @@ class TableEvaluator:
         else:
             # Show the plot
             pass        
-    def generate_individual_plots(self, save_dir=None):
+    def generate_individual_plots(self, save_dir="C:/Users/lucky"):
         """
-        Generate individual plots for each evaluation metric.
+        Generate individual plots for each evaluation metric and save them in the specified directory.
         """
-        if save_dir is None:
-            save_dir = Path(".")
-        else:
-            save_dir = Path(save_dir)
-
+        # Convert save_dir to a Path object
+        save_dir = Path(save_dir)
+    
+        # Create the directory if it doesn't exist
         save_dir.mkdir(parents=True, exist_ok=True)
-
+    
+        # Plot and save each individual plot
         self.plot_mean_std_individual(fname=save_dir/'mean_std_individual.svg')
         self.plot_cumsums_individual(fname=save_dir/'cumsums_individual.svg')
         self.plot_distributions_individual(fname=save_dir/'distributions_individual.svg')
