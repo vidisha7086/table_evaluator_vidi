@@ -805,19 +805,23 @@ class TableEvaluator:
         else:
             # Show the plot
             pass        
-    def generate_individual_plots(self, save_dir="C:/Users/lucky"):
+    import os
+
+    def generate_individual_plots(self, save_dir=None):
         """
-        Generate individual plots for each evaluation metric and save them in the specified directory.
+        Generate individual plots for each evaluation metric and save them in SVG format.
+    
+        :param save_dir: Directory path to save the plots. Default is None (current directory).
         """
-        # Convert save_dir to a Path object
-        save_dir = Path(save_dir)
+        if save_dir is None:
+            save_dir = os.getcwd()  # Use the current directory if save_dir is not provided
+        else:
+            os.makedirs(save_dir, exist_ok=True)  # Create the directory if it doesn't exist
     
-        # Create the directory if it doesn't exist
-        save_dir.mkdir(parents=True, exist_ok=True)
-    
-        # Plot and save each individual plot
-        self.plot_mean_std_individual(fname=save_dir/'mean_std_individual.svg')
-        self.plot_cumsums_individual(fname=save_dir/'cumsums_individual.svg')
-        self.plot_distributions_individual(fname=save_dir/'distributions_individual.svg')
-        self.plot_correlation_difference_individual(fname=save_dir/'correlation_difference_individual.svg')
-        self.plot_pca_individual(fname=save_dir/'pca_individual.svg')        
+        # Save each plot individually in SVG format
+        self.plot_mean_std_individual(fname=os.path.join(save_dir, 'mean_std_individual.svg'))
+        self.plot_cumsums_individual(fname=os.path.join(save_dir, 'cumsums_individual.svg'))
+        self.plot_distributions_individual(fname=os.path.join(save_dir, 'distributions_individual.svg'))
+        self.plot_correlation_difference_individual(fname=os.path.join(save_dir, 'correlation_difference_individual.svg'))
+        self.plot_pca_individual(fname=os.path.join(save_dir, 'pca_individual.svg'))
+      
