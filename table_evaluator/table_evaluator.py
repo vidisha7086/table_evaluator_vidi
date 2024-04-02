@@ -373,34 +373,34 @@ class TableEvaluator:
     from pathlib import Path
 
     def visual_evaluation(self, save_dir=None, **kwargs):
-        """
-        Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences, and the PCA transform.
-        :param save_dir: Directory path to save images.
-        :param kwargs: Any kwargs for matplotlib.
-        """
-        if save_dir is None:
-            self.plot_mean_std()
-            self.plot_cumsums()
-            self.plot_distributions()
-            self.plot_correlation_difference(**kwargs)
-            self.plot_pca()
-        else:
-            save_dir = Path(save_dir)
-            save_dir.mkdir(parents=True, exist_ok=True)
+    """
+    Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences, and the PCA transform.
+    :param save_dir: Directory path to save images.
+    :param kwargs: Any kwargs for matplotlib.
+    """
+    if save_dir is None:
+        self.plot_mean_std()
+        self.plot_cumsums()
+        self.plot_distributions()
+        self.plot_correlation_difference(**kwargs)
+        self.plot_pca()
+    else:
+        save_dir = Path(save_dir)
+        save_dir.mkdir(parents=True, exist_ok=True)
 
-            # Save each plot as individual images
-            plot_functions = [self.plot_mean_std, self.plot_cumsums, self.plot_distributions,
-                              lambda: self.plot_correlation_difference(**kwargs), self.plot_pca]
-            for i, plot_function in enumerate(plot_functions):
-                plot_data = plot_function()
-                if plot_data is not None:  # Check if plot_data is valid
-                    if isinstance(plot_data, tuple):
-                        for j, data in enumerate(plot_data):
-                            fname = save_dir / f'plot_{i}_{j}.png'
-                            data.savefig(fname)
-                    else:
-                        fname = save_dir / f'plot_{i}.png'
-                        plot_data.savefig(fname)
+        # Save each plot as individual SVG files
+        plot_functions = [self.plot_mean_std, self.plot_cumsums, self.plot_distributions,
+                          lambda: self.plot_correlation_difference(**kwargs), self.plot_pca]
+        for i, plot_function in enumerate(plot_functions):
+            plot_data = plot_function()
+            if plot_data is not None:  # Check if plot_data is valid
+                if isinstance(plot_data, tuple):
+                    for j, data in enumerate(plot_data):
+                        fname = save_dir / f'plot_{i}_{j}.svg'
+                        data.savefig(fname, format='svg')
+                else:
+                    fname = save_dir / f'plot_{i}.svg'
+                    plt.savefig(fname, format='svg')
 
 
 
