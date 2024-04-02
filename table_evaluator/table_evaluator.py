@@ -407,13 +407,17 @@ class TableEvaluator:
 
         try:
             pca_plots = self.plot_pca()
-            for i, plot in enumerate(pca_plots):
-                plt.figure()
-                plt.imshow(plot)
-                plt.savefig(save_dir / f'pca_{i}.png')
-                plt.close()
-        except Exception as e:
-            print(f"Error saving pca plot: {e}")
+            if pca_plots is not None:
+                try:
+                    for i, plot in enumerate(pca_plots):
+                        plt.figure()
+                        plt.imshow(plot)
+                        plt.savefig(save_dir / f'pca_{i}.png')
+                        plt.close()
+                except Exception as e:
+                    print(f"Error saving pca plot: {e}")
+            else:
+                print("Error: plot_pca() returned None.")
 
         try:
             self.plot_correlation_difference(**kwargs)
