@@ -3,7 +3,7 @@ import os
 import warnings
 from pathlib import Path
 from typing import Dict, Tuple, Union
-
+  
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -12,7 +12,7 @@ from dython.nominal import associations, numerical_encoding
 from scipy import stats
 from scipy.spatial.distance import cdist
 from sklearn.decomposition import PCA
-
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import ElasticNet, Lasso, LogisticRegression, Ridge
 from sklearn.metrics import f1_score, jaccard_score, mean_squared_error
@@ -25,14 +25,6 @@ from .metrics import *
 from .notebook import EvaluationResult, isnotebook, visualize_notebook
 from .utils import dict_to_df
 from .viz import *
-
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from scipy import stats
-import copy
-from pathlib import Path
-import warnings
-from typing import Tuple, Dict
 
 
 class TableEvaluator:
@@ -378,6 +370,8 @@ class TableEvaluator:
             raise Exception(f'self.target_type should be either \'class\' or \'regr\', but is {self.target_type}.')
         return results
 
+    from pathlib import Path
+
     def visual_evaluation(self, save_dir=None, **kwargs):
         """
         Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences and the PCA transform.
@@ -394,11 +388,19 @@ class TableEvaluator:
             save_dir = Path(save_dir)
             save_dir.mkdir(parents=True, exist_ok=True)
 
-            self.plot_mean_std(fname=save_dir/'mean_std.png')
-            self.plot_cumsums(fname=save_dir/'cumsums.png')
-            self.plot_distributions(fname=save_dir/'distributions.png')
-            self.plot_correlation_difference(fname=save_dir/'correlation_difference.png', **kwargs)
-            self.plot_pca(fname=save_dir/'pca.png')
+            # Save each plot as individual images
+            plot_functions = [self.plot_mean_std, self.plot_cumsums, self.plot_distributions,
+                              lambda: self.plot_correlation_difference(**kwargs), self.plot_pca]
+            for i, plot_function in enumerate(plot_functions):
+                plot_data = plot_function()
+                if isinstance(plot_data, tuple):
+                    for j, data in enumerate(plot_data):
+                        fname = save_dir / f'plot_{i}_{j}.png'
+                        data.savefig(fname)
+                else:
+                    fname = save_dir / f'plot_{i}.png'
+                    plot_data.savefig(fname)
+
 
 
     def basic_statistical_evaluation(self) -> float:
@@ -627,7 +629,6 @@ class TableEvaluator:
         return column_correlations(real, fake, self.categorical_columns)
 
     def evaluate(self, target_col: str, target_type: str = 'class', metric: str = None, verbose: bool = None,
-    
                  n_samples_distance: int = 20000, kfold: bool = False, notebook: bool = False, return_outputs: bool = False) -> Dict:
         """
         Determine correlation between attributes from the real and fake dataset using a given metric.
@@ -745,83 +746,3 @@ class TableEvaluator:
 
             print(f'\nResults:')
             print(summary.content.to_string())
-            
-    def plot_mean_std_individual(self, fname=None):
-        """
-        Plot mean and standard deviation of real and fake datasets individually.
-        """
-        # Your plotting code here
-        if fname:
-            # Save the plot to a file
-            pass
-        else:
-            # Show the plot
-            pass
-
-    def plot_cumsums_individual(self, fname=None):
-        """
-        Plot cumulative sums of real and fake datasets individually.
-        """
-        # Your plotting code here
-        if fname:
-            # Save the plot to a file
-            pass
-        else:
-            # Show the plot
-            pass
-
-    def plot_distributions_individual(self, fname=None):
-        """
-        Plot distributions of real and fake datasets individually.
-        """
-        # Your plotting code here
-        if fname:
-            # Save the plot to a file
-            pass
-        else:
-            # Show the plot
-            pass
-
-    def plot_correlation_difference_individual(self, fname=None, **kwargs):
-        """
-        Plot correlation differences between real and fake datasets individually.
-        """
-        # Your plotting code here
-        if fname:
-            # Save the plot to a file
-            pass
-        else:
-            # Show the plot
-            pass
-
-    def plot_pca_individual(self, fname=None):
-        """
-        Plot PCA of real and fake datasets individually.
-        """
-        # Your plotting code here
-        if fname:
-            # Save the plot to a file
-            pass
-        else:
-            # Show the plot
-            pass        
-    import os
-
-    def generate_individual_plots(self, save_dir=None):
-        """
-        Generate individual plots for each evaluation metric and save them in SVG format.
-    
-        :param save_dir: Directory path to save the plots. Default is None (current directory).
-        """
-        if save_dir is None:
-            save_dir = os.getcwd()  # Use the current directory if save_dir is not provided
-        else:
-            os.makedirs(save_dir, exist_ok=True)  # Create the directory if it doesn't exist
-    
-        # Save each plot individually in SVG format
-        self.plot_mean_std_individual(fname=os.path.join(save_dir, 'mean_std_individual.svg'))
-        self.plot_cumsums_individual(fname=os.path.join(save_dir, 'cumsums_individual.svg'))
-        self.plot_distributions_individual(fname=os.path.join(save_dir, 'distributions_individual.svg'))
-        self.plot_correlation_difference_individual(fname=os.path.join(save_dir, 'correlation_difference_individual.svg'))
-        self.plot_pca_individual(fname=os.path.join(save_dir, 'pca_individual.svg'))
-      
