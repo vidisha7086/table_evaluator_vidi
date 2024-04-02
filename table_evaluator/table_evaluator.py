@@ -778,11 +778,11 @@ class TableEvaluator:
         plot_functions = [self.plot_mean_std, self.plot_cumsums, self.plot_distributions,
                           lambda: self.plot_correlation_difference(**kwargs), self.plot_pca]
         for i, plot_function in enumerate(plot_functions):
-            plot_data = plot_function()
-            if plot_data is not None:  # Check if plot_data is valid
-                if isinstance(plot_data, tuple):
-                    for j, data in enumerate(plot_data):
-                        if data is not None:  # Check if data is valid
+            plot = plot_function()
+            if plot is not None:  # Check if plot is valid
+                if isinstance(plot, tuple):
+                    for j, subplot in enumerate(plot):
+                        if subplot is not None:  # Check if subplot is valid
                             fname = save_dir / f'plot_{i}_{j}.svg'  # Change file extension to SVG
                             plt.savefig(fname)  # Corrected syntax for saving the plot
                 else:
