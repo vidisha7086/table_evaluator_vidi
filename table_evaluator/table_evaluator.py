@@ -760,9 +760,9 @@ class TableEvaluator:
 
     def visual_evaluation(self, save_dir=None, **kwargs):
     """
-    Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences, and the PCA transform.
-    :param save_dir: Directory path to save images.
-    :param kwargs: Any kwargs for matplotlib.
+    Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences and the PCA transform.
+    :save_dir: directory path to save images
+    :param kwargs: any kwargs for matplotlib.
     """
     if save_dir is None:
         self.plot_mean_std()
@@ -774,20 +774,16 @@ class TableEvaluator:
         save_dir = Path(save_dir)
         save_dir.mkdir(parents=True, exist_ok=True)
 
-        # Save each plot as individual images
-        plot_functions = [self.plot_mean_std, self.plot_cumsums, self.plot_distributions,
-                          lambda: self.plot_correlation_difference(**kwargs), self.plot_pca]
-        for i, plot_function in enumerate(plot_functions):
-            plot = plot_function()
-            if plot is not None:  # Check if plot is valid
-                if isinstance(plot, tuple):
-                    for j, subplot in enumerate(plot):
-                        if subplot is not None:  # Check if subplot is valid
-                            fname = save_dir / f'plot_{i}_{j}.svg'  # Change file extension to SVG
-                            plt.savefig(fname)  # Corrected syntax for saving the plot
-                else:
-                    fname = save_dir / f'plot_{i}.svg'  # Change file extension to SVG
-                    plt.savefig(fname)  # Corrected syntax for saving the plot
+        self.plot_mean_std(fname=save_dir/'mean_std.png')
+        self.plot_distributions(fname=save_dir/'distributions.png')
+        self.plot_correlation_difference(fname=save_dir/'correlation_difference.png', **kwargs)
+        self.plot_pca(fname=save_dir/'pca.png')
+
+        # Save cumulative sums plot as individual images
+        cumsums_data = self.plot_cumsums()
+        for i, data in enumerate(cumsums_data):
+            fname = save_dir / f'cumsums_{i}.png'
+            data.savefig(fname)
 
 
 
