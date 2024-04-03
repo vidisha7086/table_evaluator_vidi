@@ -418,6 +418,8 @@ class TableEvaluator:
                     print(f"Error saving pca plot: {e}")
             else:
                 print("Error: plot_pca() returned None.")
+        except Exception as e:
+            print(f"Error in plot_pca() method: {e}")
 
         try:
             self.plot_correlation_difference(**kwargs)
