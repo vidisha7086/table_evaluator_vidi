@@ -619,16 +619,16 @@ class TableEvaluator:
         return column_correlations(real, fake, self.categorical_columns)
 
     def plot_mean_std_new(data, save_dir=None, **kwargs):
-    # Plot mean and standard deviation
-    # Use data to generate the plot
-    # Save each subplot individually if save_dir is provided
-    if save_dir is not None:
-        save_dir = Path(save_dir)
-        save_dir.mkdir(parents=True, exist_ok=True)
-        for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
-            subplot_save_path = save_dir / f'mean_std_subplot{i + 1}.png'
-            # Save the subplot with a unique filename for this subplot
-            pass
+        # Plot mean and standard deviation
+        # Use data to generate the plot
+        # Save each subplot individually if save_dir is provided
+        if save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+            for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
+                subplot_save_path = save_dir / f'mean_std_subplot{i + 1}.png'
+                # Save the subplot with a unique filename for this subplot
+                pass
 
     def plot_cumsums_new(data, save_dir=None, **kwargs):
         # Plot cumulative sums
