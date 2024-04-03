@@ -679,7 +679,7 @@ class TableEvaluator:
                 # Save the subplot with a unique filename for this subplot
                 pass
 
-    def plot_mean_std_new2(data, save_dir=None, **kwargs):
+    def plot_mean_std_neww(data, save_dir=None, **kwargs):
         # Plot mean and standard deviation
         # Use data to generate the plot
         # Separate the subplots and save them individually if save_dir is provided
@@ -710,7 +710,7 @@ class TableEvaluator:
         self.plot_distributions_new(data, save_dir=None, **kwargs)
         self.plot_correlation_difference_new(data, save_dir=None, **kwargs)
         self.plot_pca_new(data, save_dir=None, **kwargs)
-        self.plot_mean_std_new2(data, save_dir=None, **kwargs)
+        self.plot_mean_std_neww(data, save_dir=None, **kwargs)
 
         # Call other plotting functions similarly..
     
