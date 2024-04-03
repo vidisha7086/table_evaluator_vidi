@@ -410,6 +410,10 @@ class TableEvaluator:
             if pca_plots is not None:
                 try:
                     for i, plot in enumerate(pca_plots):
+                        if plot is None:
+                            print(f"Skipping plot {i} as it is None")
+                            continue
+                        
                         plt.figure()
                         plt.imshow(plot)
                         plt.savefig(save_dir / f'pca_{i}.png')
