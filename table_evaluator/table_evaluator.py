@@ -370,21 +370,7 @@ class TableEvaluator:
             raise Exception(f'self.target_type should be either \'class\' or \'regr\', but is {self.target_type}.')
         return results
 
-    def plot_mean_std_new2(data, save_dir=None, **kwargs):
-        # Plot mean and standard deviation
-        # Use data to generate the plot
-        # Separate the subplots and save them individually if save_dir is provided
-        if  save_dir is not None:
-            save_dir = Path(save_dir)
-            save_dir.mkdir(parents=True, exist_ok=True)
-                
-            # Separate the subplots and save them individually
-            for i in range(num_subplots):  # Adjust num_subplots according to the number of subplots
-                subplot_data = extract_subplot_data(data, subplot_index=i)  # Extract data for each subplot
-                subplot_save_path = save_dir / f'mean_std_subplot{i + 1}.png'
-                # Generate and save the subplot
-                # Example: plt.plot(subplot_data); plt.savefig(subplot_save_path)
-                pass    
+        
     def visual_evaluation(self, save_dir=None, **kwargs):
         """
         Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences and the PCA transform.
@@ -406,8 +392,7 @@ class TableEvaluator:
             self.plot_distributions(fname=save_dir/'distributions.png')
             self.plot_correlation_difference(fname=save_dir/'correlation_difference.png', **kwargs)
             self.plot_pca(fname=save_dir/'pca.png')
-           self. plot_mean_std_new2(data, save_dir=None, **kwargs)
-
+           
 
     def basic_statistical_evaluation(self) -> float:
         """
@@ -694,7 +679,21 @@ class TableEvaluator:
                 # Save the subplot with a unique filename for this subplot
                 pass
 
-
+    def plot_mean_std_new2(data, save_dir=None, **kwargs):
+        # Plot mean and standard deviation
+        # Use data to generate the plot
+        # Separate the subplots and save them individually if save_dir is provided
+        if  save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+                
+            # Separate the subplots and save them individually
+            for i in range(num_subplots):  # Adjust num_subplots according to the number of subplots
+                subplot_data = extract_subplot_data(data, subplot_index=i)  # Extract data for each subplot
+                subplot_save_path = save_dir / f'mean_std_subplot{i + 1}.png'
+                # Generate and save the subplot
+                # Example: plt.plot(subplot_data); plt.savefig(subplot_save_path)
+                pass
     def visual_evaluation_individual_new(data, save_dir=None, **kwargs):
         """
         Plot individual visual evaluation metrics.
@@ -706,11 +705,13 @@ class TableEvaluator:
             save_dir = Path(save_dir)
             save_dir.mkdir(parents=True, exist_ok=True)
 
-        plot_mean_std_new(data, save_dir=save_dir, **kwargs)
-        plot_cumsums_new(data, save_dir=save_dir, **kwargs)
-        plot_distributions_new(data, save_dir=None, **kwargs)
-        plot_correlation_difference_new(data, save_dir=None, **kwargs)
-        plot_pca_new(data, save_dir=None, **kwargs)
+        self.plot_mean_std_new(data, save_dir=save_dir, **kwargs)
+        self.plot_cumsums_new(data, save_dir=save_dir, **kwargs)
+        self.plot_distributions_new(data, save_dir=None, **kwargs)
+        self.plot_correlation_difference_new(data, save_dir=None, **kwargs)
+        self.plot_pca_new(data, save_dir=None, **kwargs)
+        self.plot_mean_std_new2(data, save_dir=None, **kwargs)
+
         # Call other plotting functions similarly..
     
     def evaluate(self, target_col: str, target_type: str = 'class', metric: str = None, verbose: bool = None,
