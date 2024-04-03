@@ -370,67 +370,27 @@ class TableEvaluator:
             raise Exception(f'self.target_type should be either \'class\' or \'regr\', but is {self.target_type}.')
         return results
 
-    from pathlib import Path
-
     def visual_evaluation(self, save_dir=None, **kwargs):
         """
-        Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences, and the PCA transform.
+        Plot all visual evaluation metrics. Includes plotting the mean and standard deviation, cumulative sums, correlation differences and the PCA transform.
         :save_dir: directory path to save images
         :param kwargs: any kwargs for matplotlib.
         """
         if save_dir is None:
-            raise ValueError("save_dir parameter must be provided.")
-
-        save_dir = Path(save_dir)
-        save_dir.mkdir(parents=True, exist_ok=True)
-
-        try:
             self.plot_mean_std()
-            plt.savefig(save_dir / 'mean_std.png')
-            plt.close()
-        except Exception as e:
-            print(f"Error saving mean_std plot: {e}")
-
-        try:
             self.plot_cumsums()
-            plt.savefig(save_dir / 'cumsums.png')
-            plt.close()
-        except Exception as e:
-            print(f"Error saving cumsums plot: {e}")
-
-        try:
             self.plot_distributions()
-            plt.savefig(save_dir / 'distributions.png')
-            plt.close()
-        except Exception as e:
-            print(f"Error saving distributions plot: {e}")
-
-        try:
-            pca_plots = self.plot_pca()
-            if pca_plots is not None:
-                try:
-                    for i, plot in enumerate(pca_plots):
-                        if plot is None:
-                            print(f"Skipping plot {i} as it is None")
-                            continue
-                        
-                        plt.figure()
-                        plt.imshow(plot)
-                        plt.savefig(save_dir / f'pca_{i}.png')
-                        plt.close()
-                except Exception as e:
-                    print(f"Error saving pca plot: {e}")
-            else:
-                print("Error: plot_pca() returned None.")
-        except Exception as e:
-            print(f"Error in plot_pca() method: {e}")
-
-        try:
             self.plot_correlation_difference(**kwargs)
-            plt.savefig(save_dir / 'correlation_difference.png')
-            plt.close()
-        except Exception as e:
-            print(f"Error saving correlation_difference plot: {e}")
+            self.plot_pca()
+        else:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+
+            self.plot_mean_std(fname=save_dir/'mean_std.png')
+            self.plot_cumsums(fname=save_dir/'cumsums.png')
+            self.plot_distributions(fname=save_dir/'distributions.png')
+            self.plot_correlation_difference(fname=save_dir/'correlation_difference.png', **kwargs)
+            self.plot_pca(fname=save_dir/'pca.png')
 
 
     def basic_statistical_evaluation(self) -> float:
@@ -658,6 +618,85 @@ class TableEvaluator:
 
         return column_correlations(real, fake, self.categorical_columns)
 
+    def plot_mean_std_new(data, save_dir=None, **kwargs):
+    # Plot mean and standard deviation
+    # Use data to generate the plot
+    # Save each subplot individually if save_dir is provided
+    if save_dir is not None:
+        save_dir = Path(save_dir)
+        save_dir.mkdir(parents=True, exist_ok=True)
+        for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
+            subplot_save_path = save_dir / f'mean_std_subplot{i + 1}.png'
+            # Save the subplot with a unique filename for this subplot
+            pass
+
+    def plot_cumsums_new(data, save_dir=None, **kwargs):
+        # Plot cumulative sums
+        # Use data to generate the plot
+        # Save each subplot individually if save_dir is provided
+        if save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+            for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
+                subplot_save_path = save_dir / f'cumsums_subplot{i + 1}.png'
+                # Save the subplot with a unique filename for this subplot
+                pass
+
+    def plot_distributions_new(data, save_dir=None, **kwargs):
+        # Plot distributions
+        # Use data to generate the plot
+        # Save each subplot individually if save_dir is provided
+        if save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+            for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
+                subplot_save_path = save_dir / f'distributions_subplot{i + 1}.png'
+                # Save the subplot with a unique filename for this subplot
+                pass
+
+    def plot_correlation_difference_new(data, save_dir=None, **kwargs):
+        # Plot correlation differences
+        # Use data to generate the plot
+        # Save each subplot individually if save_dir is provided
+        if save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+            for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
+                subplot_save_path = save_dir / f'correlation_difference_subplot{i + 1}.png'
+                # Save the subplot with a unique filename for this subplot
+                pass
+
+    def plot_pca_new(data, save_dir=None, **kwargs):
+        # Plot PCA transform
+        # Use data to generate the plot
+        # Save each subplot individually if save_dir is provided
+        if save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+            for i in range(num_subplots):  # Adjust num_subplots according to your actual implementation
+                subplot_save_path = save_dir / f'pca_subplot{i + 1}.png'
+                # Save the subplot with a unique filename for this subplot
+                pass
+
+
+    def visual_evaluation_individual_new(data, save_dir=None, **kwargs):
+        """
+        Plot individual visual evaluation metrics.
+        :param data: data for plotting
+        :param save_dir: directory path to save images
+        :param kwargs: any kwargs for individual plotting functions.
+        """
+        if save_dir is not None:
+            save_dir = Path(save_dir)
+            save_dir.mkdir(parents=True, exist_ok=True)
+
+        plot_mean_std_new(data, save_dir=save_dir, **kwargs)
+        plot_cumsums_new(data, save_dir=save_dir, **kwargs)
+        plot_distributions_new(data, save_dir=None, **kwargs)
+        plot_correlation_difference_new(data, save_dir=None, **kwargs)
+        plot_pca_new(data, save_dir=None, **kwargs)
+        # Call other plotting functions similarly..
+    
     def evaluate(self, target_col: str, target_type: str = 'class', metric: str = None, verbose: bool = None,
                  n_samples_distance: int = 20000, kfold: bool = False, notebook: bool = False, return_outputs: bool = False) -> Dict:
         """
