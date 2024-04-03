@@ -705,12 +705,12 @@ class TableEvaluator:
             save_dir = Path(save_dir)
             save_dir.mkdir(parents=True, exist_ok=True)
 
-        self.plot_mean_std_new(data, save_dir=save_dir, **kwargs)
-        self.plot_cumsums_new(data, save_dir=save_dir, **kwargs)
-        self.plot_distributions_new(data, save_dir=None, **kwargs)
-        self.plot_correlation_difference_new(data, save_dir=None, **kwargs)
-        self.plot_pca_new(data, save_dir=None, **kwargs)
-        self.plot_mean_std_neww(data, save_dir=None, **kwargs)
+        plot_mean_std_new(data, save_dir=save_dir, **kwargs)
+        plot_cumsums_new(data, save_dir=save_dir, **kwargs)
+        plot_distributions_new(data, save_dir=None, **kwargs)
+        plot_correlation_difference_new(data, save_dir=None, **kwargs)
+        plot_pca_new(data, save_dir=None, **kwargs)
+        plot_mean_std_neww(data, save_dir=None, **kwargs)
 
         # Call other plotting functions similarly..
     
